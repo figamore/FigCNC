@@ -1,0 +1,31 @@
+# FigCNC Licensing
+
+---
+
+## Hardware — CERN Open Hardware Licence Version 2 - Permissive (CERN-OHL-P v2)
+
+Applies to all hardware design files, including:
+- PCB designs, schematics, and Gerber files
+- Bill of materials
+- Pick-and-place files
+- 3D printable enclosure files (STL)
+
+SPDX-License-Identifier: CERN-OHL-P-2.0
+
+Copyright (c) 2026 FIGAMORE
+
+You may redistribute and modify this hardware and its documentation under the terms of the CERN-OHL-P v2 (https://ohwr.org/cern_ohl_p_v2.txt).
+
+This hardware is distributed WITHOUT ANY EXPRESS OR IMPLIED WARRANTY, INCLUDING OF MERCHANTABILITY, SATISFACTORY QUALITY AND FITNESS FOR A PARTICULAR PURPOSE. Please see the CERN-OHL-P v2 for applicable conditions.
+
+Source location: https://github.com/figamore/figcnc
+
+As per CERN-OHL-P v2 section 4, should you produce hardware based on this
+design, you must maintain the Source Location visible in the documentation
+of your product.
+
+---
+
+## Third-party acknowledgements
+
+This project is designed to run [FluidNC](https://github.com/bdring/FluidNC) firmware and the [FluidDial](https://github.com/bdring/FluidDial) pendant firmware, both licensed under GPL v3. Neither project's source code or binaries are distributed here. Users install those firmwares independently.

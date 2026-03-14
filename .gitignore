@@ -1,0 +1,31 @@
+# KiCad
+*-backups/
+*.kicad_pcb-bak
+*.kicad_sch-bak
+*.bak
+_autosave-*
+*.lck
+fp-info-cache
+*.kicad_prl
+
+# KiCad simulation
+*.cir
+*.log
+
+# OS
+.DS_Store
+.DS_Store?
+._*
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+
+# Scripts
+strip.sh
+
+# Editor
+*.swp
+*.swo
+*~
+.vscode/
+.idea/
