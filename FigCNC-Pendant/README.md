@@ -1,8 +1,10 @@
 # FigCNC Pendant
 
-A 3D-printable enclosure and cradle for a FluidNC CNC pendant, designed to fit the **Cheap Yellow Display (CYD / ESP32-2432S028R)** and a standard rotary encoder module. This project is a custom case built around [FluidDial](https://github.com/bdring/FluidDial) — all pendant functionality is provided by the FluidDial firmware; this repository contains only the printable enclosure files.
+A 3D-printable enclosure and cradle for a FluidNC CNC pendant (FluidDial), designed to fit the **Cheap Yellow Display (CYD / Guition JC2432W328C Capacitative)** and a standard rotary encoder module. This project is a custom case built around [FluidDial](https://github.com/bdring/FluidDial) — all pendant functionality is provided by the FluidDial firmware; this repository contains only the printable enclosure files.
 
 ![FigCNC Pendant with cradle](images/FigCNC-Pendant-With-Cradle.png)
+
+The STL files are also available on Makerworld: [FigCNC FluidDial Pendant for FluidNC Controllers](https://makerworld.com/en/models/2523075-figcnc-fluiddial-pendant-for-fluidnc-controllers)
 
 ---
 
