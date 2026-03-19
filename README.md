@@ -2,7 +2,7 @@
 
 **FigCNC** is an open-source CNC controller board based on the ESP32 microcontroller, designed to run [FluidNC](https://github.com/bdring/FluidNC) firmware. It provides a compact and clean interface between the ESP32 and external stepper motor drivers, with optocoupler-isolated limit switch inputs, a tool-length probe input, onboard microSD storage for G-code files, and a pendant UART interface — all powered directly from the machine's 12–36 V supply rail.
 
-Two hardware variants are available. The **FigCNC Standard** is intended for simple CNC motion control — it manages axis movement, homing, and probing without any spindle speed control. The **FigCNC Pro** is identical in every other respect but adds an RS485 interface (MAX3485 transceiver) for direct Modbus RTU control of Huanyang-compatible VFD spindles, making it suitable for machines that require closed-loop spindle speed management.
+FigCNC includes an RS485 interface (MAX3485 transceiver) for direct Modbus RTU control of Huanyang-compatible VFD spindles, making it suitable for machines that require closed-loop spindle speed management.
 
 ## Table of Contents
 
@@ -34,7 +34,7 @@ Two hardware variants are available. The **FigCNC Standard** is intended for sim
 - **MicroSD card** — SPI-connected microSD socket for storing G-code files. Accessible via the FluidNC web interface or over the serial connection.
 - **Pendant interface** — UART2 exposed on a JST-XH connector for connecting a wired or wireless pendant.
 - **UART / FTDI header** — a 4-pin header (RX, TX, GND, 5 V) provides direct serial access for firmware flashing and debug.
-- **RS485 VFD spindle (Pro only)** — the FigCNC Pro adds a MAX3485 half-duplex RS485 transceiver and a dedicated 3-pin screw terminal for direct Modbus RTU control of Huanyang-compatible VFDs, eliminating the need for a PWM-to-analog converter.
+- **RS485 VFD spindle control** — a MAX3485 half-duplex RS485 transceiver and a dedicated 3-pin screw terminal for direct Modbus RTU control of Huanyang-compatible VFDs, eliminating the need for a PWM-to-analog converter.
 - **Compact form factor** — four M3 mounting holes, compatible with standard DIN rail brackets and CNC controller enclosures.
 
 ---
@@ -64,8 +64,8 @@ Two hardware variants are available. The **FigCNC Standard** is intended for sim
 | Direction setup delay | 6 µs |
 | Motor idle timeout | 250 ms |
 | Limit / probe isolation | LTV-817 optocoupler (×5) |
-| RS485 transceiver (Pro) | Maxim MAX3485, 120 Ω termination fitted |
-| MicroSD interface | SPI, up to 4 MHz |
+| RS485 transceiver | Maxim MAX3485, 120 Ω termination fitted |
+| MicroSD interface | SPI Mode @ 8Mhz |
 
 ---
 
@@ -87,11 +87,11 @@ All files required for PCB fabrication and assembly are included in each board's
 
 | File type | Location |
 |---|---|
-| Gerber files (fabrication) | `FigCNC-Standard/gerbers/` / `FigCNC-Pro/gerbers/` |
+| Gerber files (fabrication) | `FigCNC-Pro/gerbers/` |
 | Drill files (.drl) | Included in gerbers directory |
-| Bill of materials (CSV) | `FigCNC-Standard/FigCNC-Standard.csv` / `FigCNC-Pro/FigCNC-Pro-BOM.csv` |
-| Pick-and-place positions | `FigCNC-Standard/FigCNC-Standard-all.pos` / `FigCNC-Pro/FigCNC-Pro.pos` |
-| Schematic (PDF / SVG) | `FigCNC-Standard/schematic/` / `FigCNC-Pro/schematic/` |
+| Bill of materials (CSV) | `FigCNC-Pro/FigCNC-Pro-BOM.csv` |
+| Pick-and-place positions | `FigCNC-Pro/FigCNC-Pro-positions.csv` |
+| Schematic (PDF / SVG) | `FigCNC-Pro/schematic/` |
 
 The Gerber files have been validated for standard 2-layer PCB fabrication. The board can be ordered from any standard PCB manufacturer (e.g. JLCPCB, PCBWay, OSH Park) using the provided files without modification.
 
@@ -119,9 +119,9 @@ All GPIO assignments below correspond to the provided `config.yaml` files and th
 | SPI MOSI | 23 |
 | SPI SCK | 18 |
 | MicroSD CS | 5 |
-| UART1 TX — VFD RS485 (Pro only) | 15 |
-| UART1 RX — VFD RS485 (Pro only) | 4 |
-| UART1 RTS — VFD RS485 (Pro only) | 21 |
+| UART1 TX — VFD RS485 | 15 |
+| UART1 RX — VFD RS485 | 4 |
+| UART1 RTS — VFD RS485 | 21 |
 | UART2 TX — Pendant | 17 |
 | UART2 RX — Pendant | 16 |
 
@@ -129,7 +129,7 @@ All GPIO assignments below correspond to the provided `config.yaml` files and th
 
 ## Connectors
 
-### J8 — Stepper motor interface (12-pin Phoenix screw terminal, 5.08 mm pitch)
+### J4 — Stepper/limit-switches interface (12-pin Phoenix screw terminal, 5.08 mm pitch)
 
 This is the primary stepper output terminal. Connect each signal to the corresponding input of your external stepper drivers (e.g. TB6600, DM542, or similar).
 
@@ -148,7 +148,7 @@ This is the primary stepper output terminal. Connect each signal to the correspo
 | 11 | X-DIR | X direction output |
 | 12 | X-STP | X step output |
 
-### J2 — RS485 spindle (3-pin Phoenix screw terminal, 5.00 mm pitch) — Pro only
+### J3 — RS485 spindle (3-pin Phoenix screw terminal, 5.00 mm pitch)
 
 Connect to the RS485 terminals of a Huanyang-compatible VFD. A 120 Ω termination resistor is fitted on the board.
 
@@ -158,7 +158,7 @@ Connect to the RS485 terminals of a Huanyang-compatible VFD. A 120 Ω terminatio
 | 2 | B (−) |
 | 3 | GND |
 
-### J5 — Pendant (JST-XH 4-pin)
+### J7 — Pendant (JST-XH 4-pin)
 
 | Pin | Signal |
 |---|---|
@@ -167,7 +167,7 @@ Connect to the RS485 terminals of a Huanyang-compatible VFD. A 120 Ω terminatio
 | 3 | RX (from pendant) |
 | 4 | TX (to pendant) |
 
-### J4 — UART / FTDI header (2.54 mm pitch, 4-pin)
+### J6 — UART / FTDI header (2.54 mm pitch, 4-pin)
 
 | Pin | Signal |
 |---|---|
@@ -198,7 +198,7 @@ These values match the provided configurations and serve as a reference starting
 | Y | 400 | 3000 | 100 | 327 |
 | Z | 320 | 1600 | 100 | 95 |
 
-### VFD spindle parameters (Pro with-VFD configs)
+### VFD spindle parameters (with-VFD configs)
 
 | Parameter | Value |
 |---|---|
@@ -212,15 +212,6 @@ These values match the provided configurations and serve as a reference starting
 ## Provided Configuration Files
 
 Pre-built `config.yaml` files are included for the following machine topologies. Upload the appropriate file to the ESP32 using the FluidNC web interface or over serial before running the machine.
-
-### FigCNC Standard
-
-| Configuration | Path |
-|---|---|
-| Single Y-axis motor | `FigCNC-Standard/configs/single-y-axis/config.yaml` |
-| Dual Y-axis motors (gantry) | `FigCNC-Standard/configs/double-y-axis/config.yaml` |
-
-### FigCNC Pro
 
 | Configuration | Path |
 |---|---|
